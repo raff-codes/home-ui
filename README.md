@@ -4,6 +4,7 @@ A collection of custom Lovelace cards for Home Assistant with a refined dark aes
 
 ![Dashboard Cards demo](src/images/demo.png)
 
+
 ## Cards
 
 | Card | Element | Description |
