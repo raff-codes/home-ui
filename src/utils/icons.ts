@@ -319,6 +319,35 @@ export const speedIcon = (): TemplateResult => html`
   </svg>
 `;
 
+export const batteryFullIcon = (): TemplateResult => html`
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+    fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+    <line x1="23" y1="13" x2="23" y2="11"/>
+  </svg>
+`;
+
+export const batteryLowIcon = (): TemplateResult => html`
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+    fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+    <line x1="23" y1="13" x2="23" y2="11"/>
+    <line x1="5" y1="10" x2="5" y2="14"/>
+  </svg>
+`;
+
+export const batteryChargingIcon = (): TemplateResult => html`
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+    fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+    <line x1="23" y1="13" x2="23" y2="11"/>
+    <polyline points="11 9 8 13 13 13 10 17"/>
+  </svg>
+`;
+
 /** Map an icon key string to its icon function */
 export const getIconByKey = (key: string, on = false): TemplateResult => {
   const icons: Record<string, (on?: boolean) => TemplateResult> = {
@@ -355,6 +384,9 @@ export const getIconByKey = (key: string, on = false): TemplateResult => {
     check: () => checkIcon(),
     plus: () => plusIcon(),
     speed: () => speedIcon(),
+    batteryFull: () => batteryFullIcon(),
+    batteryLow: () => batteryLowIcon(),
+    batteryCharging: () => batteryChargingIcon(),
   };
   const iconFn = icons[key] ?? icons["power"];
   return iconFn(on);

@@ -122,6 +122,7 @@ export class CameraCard extends LitElement {
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.06);
         color: var(--text-secondary);
+        flex-shrink: 0;
       }
 
       .icon-circle svg {

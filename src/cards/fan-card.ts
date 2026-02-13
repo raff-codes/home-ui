@@ -209,6 +209,7 @@ export class FanCard extends LitElement {
         background: rgba(255, 255, 255, 0.06);
         color: var(--text-secondary);
         transition: all 0.3s;
+        flex-shrink: 0;
       }
 
       .ic.on {

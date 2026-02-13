@@ -1,8 +1,10 @@
+import "./cards/battery-card";
 import "./cards/camera-card";
 import "./cards/climate-card";
 import "./cards/doorbell-card";
 import "./cards/fan-card";
 import "./cards/light-card";
+import "./cards/light-group-card";
 import "./cards/media-player-card";
 import "./cards/person-card";
 import "./cards/scene-card";

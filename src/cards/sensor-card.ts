@@ -149,6 +149,7 @@ export class SensorCard extends LitElement {
         height: 36px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.06);
+        flex-shrink: 0;
       }
 
       .icon svg {

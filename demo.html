@@ -68,6 +68,20 @@
         last_changed: new Date().toISOString(),
         last_updated: new Date().toISOString(),
       },
+      "light.kitchen": {
+        entity_id: "light.kitchen",
+        state: "on",
+        attributes: { friendly_name: "Kitchen", brightness: 180 },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "light.bathroom": {
+        entity_id: "light.bathroom",
+        state: "off",
+        attributes: { friendly_name: "Bathroom", brightness: 0 },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
       "switch.coffee_machine": {
         entity_id: "switch.coffee_machine",
         state: "on",
@@ -237,6 +251,42 @@
         last_changed: new Date().toISOString(),
         last_updated: new Date().toISOString(),
       },
+      // --- Battery entities ---
+      "sensor.tapo_tc82_battery": {
+        entity_id: "sensor.tapo_tc82_battery",
+        state: "73",
+        attributes: { friendly_name: "Tapo TC82", device_class: "battery", unit_of_measurement: "%" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.tapo_tc60_battery": {
+        entity_id: "sensor.tapo_tc60_battery",
+        state: "42",
+        attributes: { friendly_name: "Tapo TC60", device_class: "battery", unit_of_measurement: "%" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.tapo_c411_battery": {
+        entity_id: "sensor.tapo_c411_battery",
+        state: "15",
+        attributes: { friendly_name: "Tapo C411", device_class: "battery", unit_of_measurement: "%" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.eufy_doorbell_battery": {
+        entity_id: "sensor.eufy_doorbell_battery",
+        state: "88",
+        attributes: { friendly_name: "Eufy Doorbell", device_class: "battery", unit_of_measurement: "%" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.phone_battery": {
+        entity_id: "sensor.phone_battery",
+        state: "56",
+        attributes: { friendly_name: "OnePlus CPH2645", device_class: "battery", unit_of_measurement: "%", is_charging: true },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
     },
     callService(domain, service, data) {
       console.log(`[MOCK] ${domain}.${service}`, data);
@@ -275,6 +325,7 @@
 
   // ---------- Cards to render ----------
   const cards = [
+    { tag: "dashboard-light-group-card", config: { entities: ["light.living_room", "light.bedroom", "light.kitchen", "light.bathroom"], name: "All Lights" } },
     { tag: "dashboard-light-card", config: { entity: "light.living_room" } },
     { tag: "dashboard-light-card", config: { entity: "light.bedroom" } },
     { tag: "dashboard-switch-card", config: { entity: "switch.coffee_machine", icon: "coffee", active_colour: "amber" } },
@@ -294,6 +345,13 @@
     { tag: "dashboard-fan-card", config: { entity: "fan.range_hood", name: "Range Hood" } },
     { tag: "dashboard-doorbell-card", config: { entity: "binary_sensor.doorbell", camera_entity: "camera.doorbell", name: "Eufy Doorbell" } },
     { tag: "dashboard-shopping-list-card", config: { entity: "sensor.bring_grocery_list", name: "Grocery List" } },
+    { tag: "dashboard-battery-card", config: { name: "Device Batteries", entities: [
+      { entity: "sensor.tapo_tc82_battery", name: "Tapo TC82", icon: "camera" },
+      { entity: "sensor.tapo_tc60_battery", name: "Tapo TC60", icon: "camera" },
+      { entity: "sensor.tapo_c411_battery", name: "Tapo C411", icon: "camera" },
+      { entity: "sensor.eufy_doorbell_battery", name: "Eufy Doorbell", icon: "bell" },
+      { entity: "sensor.phone_battery", name: "OnePlus Phone", icon: "person" },
+    ], low_threshold: 20 } },
   ];
 
   // ---------- Mount ----------
@@ -301,7 +359,7 @@
 
   for (const { tag, config } of cards) {
     const el = document.createElement(tag);
-    el.setAttribute("data-entity", config.entity);
+    if (config.entity) el.setAttribute("data-entity", config.entity);
     el.setConfig(config);
     el.hass = { ...mockHass };
     grid.appendChild(el);

@@ -136,3 +136,21 @@ export interface ShoppingListCardConfig {
   entity: string;
   name?: string;
 }
+
+export interface LightGroupCardConfig {
+  type?: string;
+  entities: string[];
+  name?: string;
+  icon?: string;
+}
+
+export interface BatteryCardConfig {
+  type?: string;
+  entities: Array<{
+    entity: string;
+    name?: string;
+    icon?: string;
+  }>;
+  name?: string;
+  low_threshold?: number;
+}
