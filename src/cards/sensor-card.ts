@@ -64,17 +64,18 @@ export class SensorCard extends LitElement {
     const stateObj = this.hass.states[entityId];
     if (!stateObj) return nothing;
 
+    const unavailable = stateObj.state === "unavailable" || stateObj.state === "unknown";
     const deviceClass = stateObj.attributes.device_class ?? "";
     const isBinary = entityId.startsWith("binary_sensor.");
     const isMotion = deviceClass === "motion";
     const isDetected = stateObj.state === "on";
 
-    const accentColour = this._resolveColour(deviceClass, isMotion, isDetected);
+    const accentColour = unavailable ? "#4b5563" : this._resolveColour(deviceClass, isMotion, isDetected);
     const iconFn = this._resolveIcon(deviceClass);
     const displayName = this._config.name ?? stateObj.attributes.friendly_name ?? entityId;
 
     return html`
-      <ha-card>
+      <ha-card class=${unavailable ? "disabled" : ""}>
         <div class="container">
           <div class="header">
             <div class="icon" style="color: ${accentColour}">
@@ -85,13 +86,15 @@ export class SensorCard extends LitElement {
 
           <div class="value" style="color: ${accentColour}">
             ${
-              isBinary || isMotion
-                ? isDetected
-                  ? "Detected"
-                  : "Clear"
-                : html`${stateObj.state}<span class="unit"
-                    >${stateObj.attributes.unit_of_measurement ?? ""}</span
-                  >`
+              unavailable
+                ? "Unavailable"
+                : isBinary || isMotion
+                  ? isDetected
+                    ? "Detected"
+                    : "Clear"
+                  : html`${stateObj.state}<span class="unit"
+                      >${stateObj.attributes.unit_of_measurement ?? ""}</span
+                    >`
             }
           </div>
         </div>
@@ -177,6 +180,14 @@ export class SensorCard extends LitElement {
         font-weight: 400;
         margin-left: 2px;
         opacity: 0.7;
+      }
+
+      ha-card.disabled {
+        opacity: 0.45;
+      }
+
+      ha-card.disabled .value {
+        font-size: 16px;
       }
     `,
   ];

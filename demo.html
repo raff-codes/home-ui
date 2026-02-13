@@ -96,6 +96,28 @@
         last_changed: new Date().toISOString(),
         last_updated: new Date().toISOString(),
       },
+      "sensor.unavailable_temp": {
+        entity_id: "sensor.unavailable_temp",
+        state: "unavailable",
+        attributes: {
+          friendly_name: "Temperature",
+          device_class: "temperature",
+          unit_of_measurement: "\u00b0C",
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.unavailable_humidity": {
+        entity_id: "sensor.unavailable_humidity",
+        state: "unavailable",
+        attributes: {
+          friendly_name: "Humidity",
+          device_class: "humidity",
+          unit_of_measurement: "%",
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
       "sensor.living_room_temperature": {
         entity_id: "sensor.living_room_temperature",
         state: "22.5",
@@ -332,6 +354,8 @@
     { tag: "dashboard-switch-card", config: { entity: "switch.desk_lamp", icon: "power", active_colour: "sky" } },
     { tag: "dashboard-sensor-card", config: { entity: "sensor.living_room_temperature" } },
     { tag: "dashboard-sensor-card", config: { entity: "sensor.humidity" } },
+    { tag: "dashboard-sensor-card", config: { entity: "sensor.unavailable_temp" } },
+    { tag: "dashboard-sensor-card", config: { entity: "sensor.unavailable_humidity" } },
     { tag: "dashboard-climate-card", config: { entity: "climate.bedroom", step: 0.5 } },
     { tag: "dashboard-media-player-card", config: { entity: "media_player.living_room_tv" } },
     { tag: "dashboard-weather-card", config: { entity: "weather.home", show_forecast: true, num_forecasts: 5 } },

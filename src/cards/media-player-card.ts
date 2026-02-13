@@ -347,7 +347,7 @@ export class MediaPlayerCard extends LitElement {
           flex: 1;
           height: 4px;
           border-radius: 2px;
-          background: rgba(255, 255, 255, 0.15);
+          background: transparent;
           outline: none;
           cursor: pointer;
         }
@@ -361,6 +361,7 @@ export class MediaPlayerCard extends LitElement {
           background: #8b5cf6;
           cursor: pointer;
           border: none;
+          margin-top: -5px;
         }
 
         input[type="range"]::-moz-range-thumb {
@@ -373,6 +374,18 @@ export class MediaPlayerCard extends LitElement {
         }
 
         input[type="range"]::-webkit-slider-runnable-track {
+          background: linear-gradient(
+            to right,
+            #8b5cf6 0%,
+            #8b5cf6 var(--volume-pct, 50%),
+            rgba(255, 255, 255, 0.15) var(--volume-pct, 50%),
+            rgba(255, 255, 255, 0.15) 100%
+          );
+          height: 4px;
+          border-radius: 2px;
+        }
+
+        input[type="range"]::-moz-range-track {
           background: linear-gradient(
             to right,
             #8b5cf6 0%,

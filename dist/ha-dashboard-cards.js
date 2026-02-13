@@ -2280,20 +2280,20 @@
         text-transform: uppercase;
         letter-spacing: 0.03em;
       }
-    `],t([ut({attribute:!1})],ce.prototype,"hass",void 0),t([ft()],ce.prototype,"_config",void 0),t([ft()],ce.prototype,"_activated",void 0),ce=t([ht("dashboard-scene-card")],ce),window.customCards=window.customCards||[],window.customCards.push({type:"dashboard-scene-card",name:"Dashboard Scene Card",description:"A scene activation card with visual feedback."});const he={temperature:"#fb923c",humidity:"#22d3ee",energy:"#34d399",power:"#34d399"},pe={temperature:bt,humidity:xt,energy:yt,power:yt,motion:wt},ge=yt;let ue=class extends lt{setConfig(t){if(!t.entity)throw new Error("Entity is required");const e=t.entity.split(".")[0];if("sensor"!==e&&"binary_sensor"!==e)throw new Error("Entity must be a sensor or binary_sensor");this._config=t}getCardSize(){return 1}static getStubConfig(){return{entity:"sensor.temperature"}}render(){if(!this._config||!this.hass)return K;const t=this._config.entity,e=this.hass.states[t];if(!e)return K;const i=e.attributes.device_class??"",r=t.startsWith("binary_sensor."),s="motion"===i,n="on"===e.state,a=this._resolveColour(i,s,n),o=this._resolveIcon(i),d=this._config.name??e.attributes.friendly_name??t;return W`
-      <ha-card>
+    `],t([ut({attribute:!1})],ce.prototype,"hass",void 0),t([ft()],ce.prototype,"_config",void 0),t([ft()],ce.prototype,"_activated",void 0),ce=t([ht("dashboard-scene-card")],ce),window.customCards=window.customCards||[],window.customCards.push({type:"dashboard-scene-card",name:"Dashboard Scene Card",description:"A scene activation card with visual feedback."});const he={temperature:"#fb923c",humidity:"#22d3ee",energy:"#34d399",power:"#34d399"},pe={temperature:bt,humidity:xt,energy:yt,power:yt,motion:wt},ge=yt;let ue=class extends lt{setConfig(t){if(!t.entity)throw new Error("Entity is required");const e=t.entity.split(".")[0];if("sensor"!==e&&"binary_sensor"!==e)throw new Error("Entity must be a sensor or binary_sensor");this._config=t}getCardSize(){return 1}static getStubConfig(){return{entity:"sensor.temperature"}}render(){if(!this._config||!this.hass)return K;const t=this._config.entity,e=this.hass.states[t];if(!e)return K;const i="unavailable"===e.state||"unknown"===e.state,r=e.attributes.device_class??"",s=t.startsWith("binary_sensor."),n="motion"===r,a="on"===e.state,o=i?"#4b5563":this._resolveColour(r,n,a),d=this._resolveIcon(r),l=this._config.name??e.attributes.friendly_name??t;return W`
+      <ha-card class=${i?"disabled":""}>
         <div class="container">
           <div class="header">
-            <div class="icon" style="color: ${a}">
-              ${o()}
+            <div class="icon" style="color: ${o}">
+              ${d()}
             </div>
-            <span class="name">${d}</span>
+            <span class="name">${l}</span>
           </div>
 
-          <div class="value" style="color: ${a}">
-            ${r||s?n?"Detected":"Clear":W`${e.state}<span class="unit"
-                    >${e.attributes.unit_of_measurement??""}</span
-                  >`}
+          <div class="value" style="color: ${o}">
+            ${i?"Unavailable":s||n?a?"Detected":"Clear":W`${e.state}<span class="unit"
+                      >${e.attributes.unit_of_measurement??""}</span
+                    >`}
           </div>
         </div>
       </ha-card>
@@ -2357,6 +2357,14 @@
         font-weight: 400;
         margin-left: 2px;
         opacity: 0.7;
+      }
+
+      ha-card.disabled {
+        opacity: 0.45;
+      }
+
+      ha-card.disabled .value {
+        font-size: 16px;
       }
     `],t([ut({attribute:!1})],ue.prototype,"hass",void 0),t([ft()],ue.prototype,"_config",void 0),ue=t([ht("dashboard-sensor-card")],ue),window.customCards=window.customCards??[],window.customCards.push({type:"dashboard-sensor-card",name:"Sensor Card",description:"Displays sensor and binary sensor readings with auto-coloured icons."});let fe=class extends lt{constructor(){super(...arguments),this._newItem="",this.handleToggleItem=t=>{this.hass&&this._config&&this.hass.callService("shopping_list","complete_item",{name:t.name,complete:!t.complete})},this.handleAddItem=()=>{this.hass&&this._config&&this._newItem.trim()&&(this.hass.callService("shopping_list","add_item",{name:this._newItem.trim()}),this._newItem="")},this.handleInputChange=t=>{this._newItem=t.target.value},this.handleInputKeyDown=t=>{"Enter"===t.key&&(t.preventDefault(),this.handleAddItem())}}setConfig(t){if(!t.entity)throw new Error("A shopping list entity is required");this._config=t}getCardSize(){return 4}static getStubConfig(){return{entity:"sensor.bring_grocery_list",name:"Grocery List"}}get _entity(){if(this.hass&&this._config)return this.hass.states[this._config.entity]}_getName(){return this._config?.name?this._config.name:this._entity?.attributes?.friendly_name??"Shopping List"}_getItems(){const t=this._entity;if(!t)return[];const e=t.attributes?.items;return Array.isArray(e)?e:[]}_getPendingCount(){const t=this._getItems();if(t.length>0)return t.filter(t=>!t.complete).length;const e=this._entity,i=Number(e?.state);return Number.isNaN(i)?0:i}render(){if(!this._config||!this.hass)return K;if(!this._entity)return K;const t=this._getName(),e=this._getItems(),i=this._getPendingCount(),r=e.filter(t=>!t.complete),s=e.filter(t=>t.complete);return W`
       <ha-card>
