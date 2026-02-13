@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Cards Preview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0d0d;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 32px;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      opacity: 0.7;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 1200px;
+    }
+
+    /* HA card shell — mimics the ha-card element HA provides */
+    ha-card {
+      display: block;
+      background: rgba(30, 30, 46, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: background 0.3s ease, box-shadow 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Home Assistant Dashboard Cards &mdash; Preview</h1>
+<div class="grid" id="grid"></div>
+
+<script type="module">
+  // ---------- Mock hass object ----------
+  const mockHass = {
+    language: "en",
+    states: {
+      "light.living_room": {
+        entity_id: "light.living_room",
+        state: "on",
+        attributes: {
+          friendly_name: "Living Room",
+          brightness: 200,
+          rgb_color: [255, 180, 70],
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "light.bedroom": {
+        entity_id: "light.bedroom",
+        state: "off",
+        attributes: {
+          friendly_name: "Bedroom",
+          brightness: 0,
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "switch.coffee_machine": {
+        entity_id: "switch.coffee_machine",
+        state: "on",
+        attributes: { friendly_name: "Coffee Machine" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "switch.desk_lamp": {
+        entity_id: "switch.desk_lamp",
+        state: "off",
+        attributes: { friendly_name: "Desk Lamp" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.living_room_temperature": {
+        entity_id: "sensor.living_room_temperature",
+        state: "22.5",
+        attributes: {
+          friendly_name: "Living Room Temperature",
+          device_class: "temperature",
+          unit_of_measurement: "\u00b0C",
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.humidity": {
+        entity_id: "sensor.humidity",
+        state: "58",
+        attributes: {
+          friendly_name: "Humidity",
+          device_class: "humidity",
+          unit_of_measurement: "%",
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "climate.bedroom": {
+        entity_id: "climate.bedroom",
+        state: "heat",
+        attributes: {
+          friendly_name: "Bedroom Thermostat",
+          hvac_action: "heating",
+          current_temperature: 20.5,
+          temperature: 22,
+          min_temp: 7,
+          max_temp: 35,
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "media_player.living_room_tv": {
+        entity_id: "media_player.living_room_tv",
+        state: "playing",
+        attributes: {
+          friendly_name: "Living Room TV",
+          media_title: "Bohemian Rhapsody",
+          media_artist: "Queen",
+          source: "Spotify",
+          volume_level: 0.45,
+          is_volume_muted: false,
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "weather.home": {
+        entity_id: "weather.home",
+        state: "sunny",
+        attributes: {
+          friendly_name: "Home",
+          temperature: 24,
+          humidity: 55,
+          wind_speed: 12,
+          forecast: [
+            { datetime: "2026-02-14T12:00:00Z", condition: "sunny", temperature: 25, templow: 14 },
+            { datetime: "2026-02-15T12:00:00Z", condition: "partlycloudy", temperature: 22, templow: 13 },
+            { datetime: "2026-02-16T12:00:00Z", condition: "rainy", temperature: 18, templow: 11 },
+            { datetime: "2026-02-17T12:00:00Z", condition: "cloudy", temperature: 20, templow: 12 },
+            { datetime: "2026-02-18T12:00:00Z", condition: "sunny", temperature: 26, templow: 15 },
+          ],
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      // --- New card entities ---
+      "camera.front_door": {
+        entity_id: "camera.front_door",
+        state: "streaming",
+        attributes: { friendly_name: "Front Door" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "camera.driveway": {
+        entity_id: "camera.driveway",
+        state: "idle",
+        attributes: { friendly_name: "Driveway" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "scene.all_lights_off": {
+        entity_id: "scene.all_lights_off",
+        state: "scening",
+        attributes: { friendly_name: "All Lights Off" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "scene.movie_night": {
+        entity_id: "scene.movie_night",
+        state: "scening",
+        attributes: { friendly_name: "Movie Night" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "person.rafael": {
+        entity_id: "person.rafael",
+        state: "home",
+        attributes: { friendly_name: "Rafael", battery_level: 82 },
+        last_changed: new Date(Date.now() - 1200000).toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "person.bahar": {
+        entity_id: "person.bahar",
+        state: "not_home",
+        attributes: { friendly_name: "Bahar", battery_level: 45 },
+        last_changed: new Date(Date.now() - 7200000).toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "fan.range_hood": {
+        entity_id: "fan.range_hood",
+        state: "on",
+        attributes: {
+          friendly_name: "Range Hood",
+          percentage: 66,
+          preset_mode: "medium",
+          preset_modes: ["low", "medium", "high"],
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "binary_sensor.doorbell": {
+        entity_id: "binary_sensor.doorbell",
+        state: "off",
+        attributes: { friendly_name: "Eufy Doorbell" },
+        last_changed: new Date(Date.now() - 3600000).toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "camera.doorbell": {
+        entity_id: "camera.doorbell",
+        state: "idle",
+        attributes: { friendly_name: "Doorbell Camera" },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+      "sensor.bring_grocery_list": {
+        entity_id: "sensor.bring_grocery_list",
+        state: "4",
+        attributes: {
+          friendly_name: "Grocery List",
+          items: [
+            { name: "Milk", complete: false },
+            { name: "Eggs", complete: false },
+            { name: "Bread", complete: false },
+            { name: "Avocados", complete: false },
+            { name: "Butter", complete: true },
+            { name: "Coffee Beans", complete: true },
+          ],
+        },
+        last_changed: new Date().toISOString(),
+        last_updated: new Date().toISOString(),
+      },
+    },
+    callService(domain, service, data) {
+      console.log(`[MOCK] ${domain}.${service}`, data);
+      // Simulate toggle for lights and switches
+      const entityId = data?.entity_id;
+      if (entityId && service === "toggle") {
+        const entity = this.states[entityId];
+        if (entity) {
+          entity.state = entity.state === "on" ? "off" : "on";
+          // Re-assign hass to trigger Lit re-render
+          document.querySelectorAll("[data-entity]").forEach((el) => {
+            el.hass = { ...mockHass };
+          });
+        }
+      }
+      return Promise.resolve();
+    },
+  };
+
+  // ---------- Load the built bundle ----------
+  await import("./dist/ha-dashboard-cards.js");
+
+  // ---------- Register <ha-card> as a simple passthrough if HA hasn't ----------
+  if (!customElements.get("ha-card")) {
+    customElements.define(
+      "ha-card",
+      class extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: "open" });
+          this.shadowRoot.innerHTML = `<style>:host{display:block}</style><slot></slot>`;
+        }
+      },
+    );
+  }
+
+  // ---------- Cards to render ----------
+  const cards = [
+    { tag: "dashboard-light-card", config: { entity: "light.living_room" } },
+    { tag: "dashboard-light-card", config: { entity: "light.bedroom" } },
+    { tag: "dashboard-switch-card", config: { entity: "switch.coffee_machine", icon: "coffee", active_colour: "amber" } },
+    { tag: "dashboard-switch-card", config: { entity: "switch.desk_lamp", icon: "power", active_colour: "sky" } },
+    { tag: "dashboard-sensor-card", config: { entity: "sensor.living_room_temperature" } },
+    { tag: "dashboard-sensor-card", config: { entity: "sensor.humidity" } },
+    { tag: "dashboard-climate-card", config: { entity: "climate.bedroom", step: 0.5 } },
+    { tag: "dashboard-media-player-card", config: { entity: "media_player.living_room_tv" } },
+    { tag: "dashboard-weather-card", config: { entity: "weather.home", show_forecast: true, num_forecasts: 5 } },
+    // --- New cards ---
+    { tag: "dashboard-camera-card", config: { entity: "camera.front_door", name: "Front Door" } },
+    { tag: "dashboard-camera-card", config: { entity: "camera.driveway", name: "Driveway" } },
+    { tag: "dashboard-scene-card", config: { entity: "scene.all_lights_off", name: "All Lights Off", icon: "power", active_colour: "rose" } },
+    { tag: "dashboard-scene-card", config: { entity: "scene.movie_night", name: "Movie Night", icon: "scene", active_colour: "purple" } },
+    { tag: "dashboard-person-card", config: { entity: "person.rafael", name: "Rafael" } },
+    { tag: "dashboard-person-card", config: { entity: "person.bahar", name: "Bahar" } },
+    { tag: "dashboard-fan-card", config: { entity: "fan.range_hood", name: "Range Hood" } },
+    { tag: "dashboard-doorbell-card", config: { entity: "binary_sensor.doorbell", camera_entity: "camera.doorbell", name: "Eufy Doorbell" } },
+    { tag: "dashboard-shopping-list-card", config: { entity: "sensor.bring_grocery_list", name: "Grocery List" } },
+  ];
+
+  // ---------- Mount ----------
+  const grid = document.getElementById("grid");
+
+  for (const { tag, config } of cards) {
+    const el = document.createElement(tag);
+    el.setAttribute("data-entity", config.entity);
+    el.setConfig(config);
+    el.hass = { ...mockHass };
+    grid.appendChild(el);
+  }
+</script>
+</body>
+</html>
