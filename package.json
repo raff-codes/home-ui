@@ -1,6 +1,6 @@
 {
   "name": "ha-dashboard-cards",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "description": "HACS-compatible custom Lovelace card collection for Home Assistant",
   "type": "module",
   "scripts": {

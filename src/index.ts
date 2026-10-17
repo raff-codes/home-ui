@@ -14,7 +14,7 @@ import "./cards/switch-card";
 import "./cards/weather-card";
 
 console.info(
-  "%c DASHBOARD-CARDS %c v1.0.0 ",
+  "%c DASHBOARD-CARDS %c v1.2.1 ",
   "background: #fbbf24; color: #1a1a2e; font-weight: bold; padding: 2px 6px; border-radius: 4px 0 0 4px;",
   "background: #1a1a2e; color: #fbbf24; font-weight: bold; padding: 2px 6px; border-radius: 0 4px 4px 0;",
 );
