@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { CameraCardConfig, HomeAssistant } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { cameraIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -217,8 +218,7 @@ export class CameraCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-camera-card",
   name: "Dashboard Camera Card",
   description: "Camera feed card with live indicator and aspect ratio support.",

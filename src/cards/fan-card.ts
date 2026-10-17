@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { FanCardConfig, HomeAssistant } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { fanIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -41,16 +42,16 @@ export class FanCard extends LitElement {
   }
 
   private _getPercentage(): number {
-    return (this._entity?.attributes?.percentage as number) ?? 0;
+    return this._entity?.attributes?.percentage ?? 0;
   }
 
   private _getPresetMode(): string {
-    return (this._entity?.attributes?.preset_mode as string) ?? "";
+    return this._entity?.attributes?.preset_mode ?? "";
   }
 
   private _getSpeedList(): string[] {
     const modes = this._entity?.attributes?.preset_modes;
-    if (Array.isArray(modes) && modes.length > 0) return modes as string[];
+    if (Array.isArray(modes) && modes.length > 0) return modes;
     return SPEED_LIST;
   }
 
@@ -318,8 +319,7 @@ export class FanCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-fan-card",
   name: "Dashboard Fan Card",
   description: "Fan speed control card with visual spinner and preset modes.",

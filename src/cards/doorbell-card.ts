@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { DoorbellCardConfig, HomeAssistant } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { bellIcon, cameraIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -47,7 +48,7 @@ export class DoorbellCard extends LitElement {
   private _hasMotion(): boolean {
     const entity = this._doorbellEntity;
     const attrs = entity?.attributes;
-    return (attrs?.motion as boolean) === true || entity?.state === "motion";
+    return attrs?.motion === true || entity?.state === "motion";
   }
 
   private _getCameraImage(): string | null {
@@ -315,8 +316,7 @@ export class DoorbellCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-doorbell-card",
   name: "Dashboard Doorbell Card",
   description: "Doorbell card with camera feed and event notifications.",

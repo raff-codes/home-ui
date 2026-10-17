@@ -1,12 +1,11 @@
 import { css, html, LitElement, nothing, svg } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, LightCardConfig } from "../types";
-import { brightnessToPercent, debounce } from "../utils/helpers";
+import { brightnessToPercent, debounce, registerCustomCard } from "../utils/helpers";
 import { bulbIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-light-card",
   name: "Dashboard Light Card",
   description: "A light card with circular brightness ring and purple theme.",

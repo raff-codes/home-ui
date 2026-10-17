@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { BatteryCardConfig, HomeAssistant } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { batteryChargingIcon, batteryFullIcon, batteryLowIcon, getIconByKey } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -64,9 +65,7 @@ export class BatteryCard extends LitElement {
       if (level == null || Number.isNaN(level)) continue;
 
       const charging =
-        (attrs.is_charging as boolean) === true ||
-        (attrs.charging as boolean) === true ||
-        stateObj.state === "charging";
+        attrs.is_charging === true || attrs.charging === true || stateObj.state === "charging";
 
       results.push({
         entityId: entry.entity,
@@ -297,8 +296,7 @@ export class BatteryCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-battery-card",
   name: "Dashboard Battery Card",
   description: "Battery tracker for cameras, phones, and other battery-powered devices.",

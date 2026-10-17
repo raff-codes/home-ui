@@ -19,6 +19,12 @@ export interface HassEntityAttributes {
   forecast?: WeatherForecast[];
   humidity?: number;
   wind_speed?: number;
+  percentage?: number;
+  preset_mode?: string;
+  preset_modes?: string[];
+  is_charging?: boolean;
+  charging?: boolean;
+  motion?: boolean;
   [key: string]: unknown;
 }
 
@@ -153,4 +159,17 @@ export interface BatteryCardConfig {
   }>;
   name?: string;
   low_threshold?: number;
+}
+
+export interface CustomCardEntry {
+  type: string;
+  name: string;
+  description: string;
+  preview?: boolean;
+}
+
+declare global {
+  interface Window {
+    customCards?: CustomCardEntry[];
+  }
 }
