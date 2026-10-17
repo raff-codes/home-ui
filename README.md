@@ -10,8 +10,10 @@ A collection of custom Lovelace cards for Home Assistant with a refined dark aes
 | Card | Element | Description |
 |------|---------|-------------|
 | Light | `custom:dashboard-light-card` | Brightness control with colour-matched glow |
+| Light Group | `custom:dashboard-light-group-card` | Toggle several lights at once with an on-count |
 | Switch | `custom:dashboard-switch-card` | Toggle with status dot and colour accents |
 | Sensor | `custom:dashboard-sensor-card` | Read-only display for temperature, humidity, motion, etc. |
+| Battery | `custom:dashboard-battery-card` | Battery levels for several devices, lowest first, with charging state |
 | Climate | `custom:dashboard-climate-card` | Thermostat with target temperature and heat progress bar |
 | Weather | `custom:dashboard-weather-card` | Current conditions with multi-day forecast |
 | Media Player | `custom:dashboard-media-player-card` | Transport controls, volume slider, animated equaliser |
@@ -66,6 +68,20 @@ type: custom:dashboard-weather-card
 entity: weather.home
 show_forecast: true
 num_forecasts: 5
+
+type: custom:dashboard-light-group-card
+entities:
+  - light.living_room
+  - light.bedroom
+name: All Lights
+
+type: custom:dashboard-battery-card
+entities:
+  - entity: sensor.phone_battery
+    name: Phone
+  - entity: sensor.door_lock_battery
+name: Batteries
+low_threshold: 20
 ```
 
 ## Development
