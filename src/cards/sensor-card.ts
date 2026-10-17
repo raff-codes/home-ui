@@ -70,7 +70,9 @@ export class SensorCard extends LitElement {
     const isMotion = deviceClass === "motion";
     const isDetected = stateObj.state === "on";
 
-    const accentColour = unavailable ? "#4b5563" : this._resolveColour(deviceClass, isMotion, isDetected);
+    const accentColour = unavailable
+      ? "#4b5563"
+      : this._resolveColour(deviceClass, isMotion, isDetected);
     const iconFn = this._resolveIcon(deviceClass);
     const displayName = this._config.name ?? stateObj.attributes.friendly_name ?? entityId;
 
