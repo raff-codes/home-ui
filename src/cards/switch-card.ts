@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, SwitchCardConfig } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { getIconByKey } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -12,8 +13,7 @@ const COLOUR_MAP: Record<string, string> = {
   rose: "#fb7185",
 };
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-switch-card",
   name: "Dashboard Switch Card",
   description: "A square widget switch card with purple theme.",

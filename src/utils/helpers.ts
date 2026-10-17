@@ -1,3 +1,5 @@
+import type { CustomCardEntry } from "../types";
+
 /** Clamp a number between min and max */
 export const clamp = (val: number, min: number, max: number): number =>
   Math.min(Math.max(val, min), max);
@@ -10,13 +12,19 @@ export const rgbToGlow = (rgb: [number, number, number], intensity = 0.15): stri
   `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${intensity})`;
 
 /** Debounce wrapper for slider service calls */
-export const debounce = <T extends (...args: any[]) => void>(
-  fn: T,
+export const debounce = <A extends unknown[]>(
+  fn: (...args: A) => void,
   ms: number,
-): ((...args: Parameters<T>) => void) => {
+): ((...args: A) => void) => {
   let timer: ReturnType<typeof setTimeout> | undefined;
-  return (...args: Parameters<T>) => {
+  return (...args: A) => {
     if (timer !== undefined) clearTimeout(timer);
     timer = setTimeout(() => fn(...args), ms);
   };
+};
+
+/** Register a card with Home Assistant's card picker */
+export const registerCustomCard = (card: CustomCardEntry): void => {
+  window.customCards = window.customCards ?? [];
+  window.customCards.push(card);
 };

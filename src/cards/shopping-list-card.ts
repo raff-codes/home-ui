@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, ShoppingListCardConfig } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { checkIcon, plusIcon, shoppingCartIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -358,8 +359,7 @@ export class ShoppingListCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-shopping-list-card",
   name: "Dashboard Shopping List Card",
   description: "Shopping list card with Bring! integration support.",

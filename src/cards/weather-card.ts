@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, WeatherCardConfig, WeatherForecast } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import {
   boltIcon,
   cloudIcon,
@@ -335,8 +336,7 @@ export class WeatherCard extends LitElement {
 }
 
 // Register with Home Assistant custom cards registry
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-weather-card",
   name: "Dashboard Weather Card",
   description: "A weather card with current conditions and forecast display.",

@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing, type TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, SensorCardConfig } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { boltIcon, dropletIcon, motionIcon, thermometerIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -70,7 +71,9 @@ export class SensorCard extends LitElement {
     const isMotion = deviceClass === "motion";
     const isDetected = stateObj.state === "on";
 
-    const accentColour = unavailable ? "#4b5563" : this._resolveColour(deviceClass, isMotion, isDetected);
+    const accentColour = unavailable
+      ? "#4b5563"
+      : this._resolveColour(deviceClass, isMotion, isDetected);
     const iconFn = this._resolveIcon(deviceClass);
     const displayName = this._config.name ?? stateObj.attributes.friendly_name ?? entityId;
 
@@ -201,8 +204,7 @@ declare global {
   }
 }
 
-(window as any).customCards = (window as any).customCards ?? [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-sensor-card",
   name: "Sensor Card",
   description: "Displays sensor and binary sensor readings with auto-coloured icons.",

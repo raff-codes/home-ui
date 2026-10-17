@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, PersonCardConfig } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { homeIcon, mapPinIcon, personIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -276,8 +277,7 @@ export class PersonCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-person-card",
   name: "Dashboard Person Card",
   description: "Person presence tracking card with avatar and zone display.",

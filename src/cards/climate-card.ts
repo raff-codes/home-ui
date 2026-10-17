@@ -1,7 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { ClimateCardConfig, HomeAssistant } from "../types";
-import { clamp } from "../utils/helpers";
+import { clamp, registerCustomCard } from "../utils/helpers";
 import { chevronDownIcon, chevronUpIcon, flameIcon } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -351,8 +351,7 @@ declare global {
   }
 }
 
-(window as any).customCards = (window as any).customCards ?? [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-climate-card",
   name: "Climate Card",
   description:

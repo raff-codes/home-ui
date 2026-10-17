@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, SceneCardConfig } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { getIconByKey } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -184,8 +185,7 @@ export class SceneCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-scene-card",
   name: "Dashboard Scene Card",
   description: "A scene activation card with visual feedback.",

@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HomeAssistant, LightGroupCardConfig } from "../types";
+import { registerCustomCard } from "../utils/helpers";
 import { bulbIcon, getIconByKey } from "../utils/icons";
 import { sharedStyles } from "../utils/styles";
 
@@ -274,8 +275,7 @@ export class LightGroupCard extends LitElement {
   ];
 }
 
-(window as any).customCards = (window as any).customCards || [];
-(window as any).customCards.push({
+registerCustomCard({
   type: "dashboard-light-group-card",
   name: "Dashboard Light Group Card",
   description: "Group toggle for multiple lights with partial state indicator.",
